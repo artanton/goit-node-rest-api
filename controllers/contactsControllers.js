@@ -43,18 +43,6 @@ export const createContact = async (req, res, next) => {
   }
 };
 
-export const deleteContact = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const result = await contactsService.removeContact(id);
-    if (!result) {
-      throw HttpError(404, `Not found`);
-    }
-    res.json({ message: "Delete success" });
-  } catch (error) {
-    next(error);
-  }
-};
 export const updateContact = async (req, res, next) => {
   try {
     const data = req.body;
@@ -68,9 +56,22 @@ export const updateContact = async (req, res, next) => {
     const { id } = req.params;
     const result = await contactsService.updateContactById(id, data);
     if (!result) {
-      throw HttpError(404, error.message);
+      throw HttpError(404, `Not found`);
     }
     res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteContact = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await contactsService.removeContact(id);
+    if (!result) {
+      throw HttpError(404, `Not found`);
+    }
+    res.json({ message: "Delete success" });
   } catch (error) {
     next(error);
   }
