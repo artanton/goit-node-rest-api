@@ -55,7 +55,6 @@ export const deleteContact = async (req, res, next) => {
     next(error);
   }
 };
-
 export const updateContact = async (req, res, next) => {
   try {
     const data = req.body;
