@@ -13,12 +13,18 @@ contactsRouter.get("/", contactsController.getAllContacts);
 
 contactsRouter.get("/:id", isValidId, contactsController.getOneContact);
 
-contactsRouter.post("/",
+contactsRouter.post(
+  "/",
   validateBody(createContactSchema),
   contactsController.createContact
 );
 
-contactsRouter.put("/:id", isValidId, contactsController.updateContact);
+contactsRouter.put(
+  "/:id",
+  isValidId,
+  validateBody(updateContactSchema),
+  contactsController.updateContact
+);
 
 contactsRouter.delete("/:id", isValidId, contactsController.deleteContact);
 
