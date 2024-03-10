@@ -15,7 +15,7 @@ const getOneContact = async (req, res) => {
     throw HttpError(404, `Not found`);
   }
 
-  res.status(404).json(result);
+  res.json(result);
 };
 
 const createContact = async (req, res) => {
