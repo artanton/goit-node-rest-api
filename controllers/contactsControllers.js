@@ -46,10 +46,20 @@ const deleteContact = async (req, res) => {
   res.json({ message: "Delete success" });
 };
 
+const updateStatus = async (req, res)=>{
+  const {id}= req.params;
+  const result= await contactsService.updateStatusContact(id, req.body);
+  if(!result){
+    throw HttpError(404, 'Not found');
+    }
+    res.json(result)
+}
+
 export default {
   getAllContacts: ctrlWrapper(getAllContacts),
   getOneContact: ctrlWrapper(getOneContact),
   createContact: ctrlWrapper(createContact),
   updateContact: ctrlWrapper(updateContact),
   deleteContact: ctrlWrapper(deleteContact),
+  updateStatus: ctrlWrapper(updateStatus),
 };
