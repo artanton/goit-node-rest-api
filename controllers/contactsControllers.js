@@ -4,7 +4,10 @@ import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 const getAllContacts = async (req, res) => {
-  const result = await contactsService.listContacts();
+  const{_id:owner}=req.user;
+  const {page=1, limit=5}=req.query;
+  const skip = (page-1)*limit;
+  const result = await contactsService.listContacts({owner},{skip, limit});
   res.json(result);
 };
 
@@ -19,7 +22,8 @@ const getOneContact = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-  const result = await contactsService.addContact(req.body);
+  const{_id:owner}=req.user;
+  const result = await contactsService.addContact({...req.body,owner});
   console.log(req.body);
   res.status(201).json(result);
 };
