@@ -3,6 +3,7 @@ import authController from "../controllers/authControllers.js";
 import { signInSchema, signUpSchema } from "../schemas/userSchemas.js";
 import validateBody from "../decorators/validateBody.js";
 import authentificate from "../middlewares/authentificate.js";
+import upload from "../middlewares/upload.js";
 
 const authRouter = express.Router();
 
@@ -14,6 +15,7 @@ authRouter.post(
 
 authRouter.post(
   "/login",
+  upload.single("avatarURL"),
   validateBody(signInSchema),
   authController.signIn
 );
