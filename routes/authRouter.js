@@ -24,6 +24,7 @@ authRouter.post(
 authRouter.patch(
   "/avatars",
   upload.single("avatarURL"),
+  validateBody(updateSchema),
   authentificate,
 
   authController.update

@@ -2,6 +2,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import fs from "fs/promises";
 import path from "path";
+import Jimp from "jimp";
+import gravatar from "gravatar-url";
+
 
 import * as authService from "../services/authServices.js";
 
@@ -23,6 +26,9 @@ const signUp = async (req, res) => {
 
   const newUser = await authService.signup(req.body);
 
+  const avatarURL = gravatar(email, {s:250});
+  await authService.updateUser({ email }, { avatarURL });
+
   res.status(201).json({
     email: newUser.email,
     subscription: newUser.subscription,
@@ -41,7 +47,7 @@ const signIn = async (req, res) => {
     isUserExist.password
   );
   if (!comparePassword) {
-    throw HttpError(401, "Email or password is wrong");
+    throw HttpError(401,  "Email or password is wrong");
   }
   const { _id: id } = isUserExist;
   const payload = {
@@ -49,23 +55,26 @@ const signIn = async (req, res) => {
   };
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
   await authService.updateUser({ _id: id }, { token });
+
   res.json({ token });
 };
 
 const update = async (req, res) => {
- 
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
+
+  const image = await Jimp.read(oldPath);
+  image.resize(250, 250).write(oldPath);
 
   const newPath = path.join(avatarsPath, filename);
 
   await fs.rename(oldPath, newPath);
   const avatarURL = path.join("avatars", filename);
 
-  await authService.updateUser({ _id }, { avatarURL});
+  await authService.updateUser({ _id }, { avatarURL });
 
   res.status(200).json({
-    avatarURL
+    avatarURL,
   });
 };
 
