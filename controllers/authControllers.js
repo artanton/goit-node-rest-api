@@ -61,7 +61,11 @@ const signIn = async (req, res) => {
 
 const update = async (req, res) => {
   const { _id } = req.user;
-  const { path: oldPath, filename } = req.file;
+  if (!req.file) {
+    throw HttpError(401, "No file uploaded");;
+  }
+  const { path: oldPath, filename} = req.file;
+
 
   const image = await Jimp.read(oldPath);
   image.resize(250, 250).write(oldPath);

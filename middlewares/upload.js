@@ -14,16 +14,17 @@ const storage = multer.diskStorage({
 });
 
 const limits = {
-    fileSize: 1024 * 1024 * 5,
-}
+  fileSize: 1024 * 1024 * 5,
+};
 
 const fileFilter = (req, file, callback) => {
-    const extension = file.originalname.split(".").pop();
-    if(extension === "exe") {
-        return callback(HttpError(400, ".exe is not allowed extension format"));
-    }
-    callback(null, true);
-}
+ 
+  const extension = file.originalname.split(".").pop();
+  if (extension === "exe") {
+    return callback(HttpError(400, ".exe is not allowed extension format"));
+  }
+  callback(null, true);
+};
 
 const upload = multer({
   storage,
