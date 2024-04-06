@@ -13,4 +13,9 @@ export const signUpSchema = Joi.object ({
 
 export const updateSchema = Joi.object({
     avatarURL: Joi.string().regex(/\.(jpg|jpeg|png)$/i)
-})
+});
+
+export const emailSchema = Joi.object ({
+    email: Joi.string().required(),
+    
+});
