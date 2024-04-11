@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 import { handleSaveError, setUpdateSettings } from "./hooks.js";
 
+
+
 const userSchema = new Schema ({
     email: {
         type: String,
@@ -26,7 +28,16 @@ const userSchema = new Schema ({
       token: {
         type: String,
         default: null,
-      }},
+      },
+      verify:{
+        type: Boolean,
+        default: false,
+      },
+      verificationCode : {
+        type : String,
+        
+      }
+    },
       {versionKey: false, timestamps: true
 });
 userSchema.post("save", handleSaveError);
